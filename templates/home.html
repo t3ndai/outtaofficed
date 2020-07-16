@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}
+    OuttaOffice
+{% endblock title %}
+
+{% block content %}
+    <h1> OuttaOffice home </h1>
+    <p><a href="{% url 'create-item' %}">+ create native item</a></p>
+    <p><a href="{% url 'create-collection' %}">+create collection</a></p>
+{% endblock content %}

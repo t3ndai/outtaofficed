@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for collection in collections  %}
+        <article>
+            {{ collection.name }}
+            <a href="{% url 'collection-detail' collection.id %}">View Item</a>
+        </article>
+    {% endfor %}
+{% endblock content %} 

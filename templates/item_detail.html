@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {{ item.body }}
+    {% if media %}
+        <img src="{{ media.image }}" />
+    {% endif %}
+{% endblock content %}
