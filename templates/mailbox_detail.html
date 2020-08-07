@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article>
+    {{ mailbox.name }}
+
+    <a href="{% url 'create-topic' mailbox.id %}"><p>+ create topic</p></a>
+</article>
+{% endblock content %}

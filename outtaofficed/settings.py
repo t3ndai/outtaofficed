@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "accounts",
     "pages",
     "items",
+    "connections",
 ]
 
 MIDDLEWARE = [
@@ -155,6 +156,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 ## Email
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+MAILGUN_API_KEY = "key-2c6a3a940e26a07718dd3ac12fe2a621"
 
 ## Logging
 
@@ -163,4 +165,8 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {"console": {"class": "logging.StreamHandler",},},
     "root": {"handlers": ["console"], "level": "DEBUG",},
+    "loggers": {"asyncio": {"level": "WARNING"}},
 }
+
+DOMAIN = "outtaoffice.work"
+

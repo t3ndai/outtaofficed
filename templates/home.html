@@ -8,4 +8,8 @@
     <h1> OuttaOffice home </h1>
     <p><a href="{% url 'create-item' %}">+ create native item</a></p>
     <p><a href="{% url 'create-collection' %}">+create collection</a></p>
+    <p><a href="{% url 'create-mailbox' %}">+create group | list</a></p>
+
+    <h2> User mailboxes | lists <h2>
+    {% include 'mailbox_list.html' %}
 {% endblock content %}

@@ -6,7 +6,7 @@ from .models import Profile
 # Create your views here.
 class CreateProfileView(CreateView):
     model = Profile
-    fields = ["screen_name"]
+    fields = ["screen_name", "alias"]
     template_name = "create_profile.html"
 
     def form_valid(self, form):
@@ -16,7 +16,7 @@ class CreateProfileView(CreateView):
 
 class UpdateProfileView(UpdateView):
     model = Profile
-    fields = ["screen_name"]
+    fields = ["screen_name", "alias"]
 
 
 class ProfileDetailView(DetailView):

@@ -14,6 +14,7 @@ class CustomUser(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, primary_key=True, on_delete=models.CASCADE)
     screen_name = models.CharField(unique=True, max_length=75)
+    alias = models.CharField(unique=True, max_length=75, null=True, blank=True)
 
     def __str__(self):
         return self.screen_name

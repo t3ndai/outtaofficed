@@ -1,0 +1,13 @@
+{% block content %}
+
+    {% for mailbox in mailboxes %}
+        <article>
+            <a href="{% url 'mailbox-detail' mailbox.id %}">
+                <p>{{ mailbox.name }}
+            </a>
+        </article>
+    {% endfor %}
+
+{% endblock %}
+
+
