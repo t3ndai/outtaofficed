@@ -4,8 +4,10 @@ from django.views.generic.edit import FormView
 from accounts.models import Profile
 from .models import Mailbox, Topic
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from utilities import rules
 
-# Create your views here.
+
 class CreateMailboxView(FormView):
     template_name = "create_mailbox.html"
     form_class = MailboxForm
@@ -31,6 +33,7 @@ class CreateMailboxView(FormView):
         return redirect(reverse("home"))
 
 
+@login_required
 def mailbox_list(request):
     profile = Profile.objects.get(user_id=request.user.id)
     mailboxes = profile.mailboxes.all()
@@ -38,12 +41,15 @@ def mailbox_list(request):
     return render(request, "mailbox_list.html", {"mailboxes": mailboxes})
 
 
+@login_required
+@rules.is_mailbox_member
 def mailbox_detail(request, mailbox_id):
     mailbox = Mailbox.objects.get(id=mailbox_id)
 
     return render(request, "mailbox_detail.html", {"mailbox": mailbox})
 
 
+@login_required
 def create_topic_view(request, mailbox_id):
 
     members_query = Mailbox.objects.get(id=mailbox_id).members.all()
