@@ -14,13 +14,14 @@ class Mailbox(models.Model):
     PRIVATE = "P"
     PRIVATE_LIMITED = "PL"
     MAILBOX_TYPES = [(PRIVATE, "Private"), (PRIVATE_LIMITED, "Private Limited")]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(
-        "accounts.Profile", on_delete=models.CASCADE, related_name="mailboxes"
+        "accounts.Profile", on_delete=models.CASCADE, related_name="mailboxes_owned"
     )
     name = models.CharField(max_length=75)
     members = models.ManyToManyField(
-        "accounts.Profile", through="MailboxDetail", related_name="mailbox_members"
+        "accounts.Profile", through="MailboxDetail", related_name="mailboxes",
     )
     address = models.EmailField(unique=True, default=generate_address())
     mailbox_type = models.CharField(
@@ -36,7 +37,7 @@ class MailboxDetail(models.Model):
     mailbox = models.ForeignKey(
         Mailbox, on_delete=models.CASCADE, related_name="mailbox"
     )
-    profile = models.ForeignKey(
+    member = models.ForeignKey(
         "accounts.Profile", on_delete=models.CASCADE, related_name="mailbox_member"
     )
     date_added = models.DateField(auto_now=True)
@@ -59,16 +60,16 @@ def members_in_group_dict(mailbox_id):
 
 class Topic(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    creator = models.ForeignKey(
-        "accounts.Profile", blank=True, null=True, on_delete=models.SET_NULL
-    )
     mailbox = models.ForeignKey(
         Mailbox, on_delete=models.CASCADE, related_name="mailbox_topics"
     )
     name = models.CharField(null=False, blank=False, max_length=75, editable=False)
     created_on = models.DateField(auto_now=True)
     member = models.ManyToManyField(
-        "accounts.Profile", through="TopicDetail", related_name="member_topics",
+        "accounts.Profile",
+        through="TopicDetail",
+        through_fields=("topic", "member"),
+        related_name="topics",
     )
     email_replies = models.BooleanField(null=False, blank=False, default=False)
 
@@ -81,5 +82,12 @@ class TopicDetail(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name="topic")
     member = models.ForeignKey(
         "accounts.Profile", related_name="topic_member", on_delete=models.CASCADE
+    )
+    creator = models.ForeignKey(
+        "accounts.Profile",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="topics_created",
     )
     notifications = models.BooleanField(default=True)

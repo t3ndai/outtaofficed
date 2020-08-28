@@ -9,7 +9,7 @@ def mailbox_member_exists(member, mailbox):
 
 
 def mailbox_owner(member, mailbox):
-    return member.mailboxes.filter(id=mailbox).exists()
+    return member.mailboxes_owned.filter(id=mailbox).exists()
 
 
 def is_mailbox_member(function):

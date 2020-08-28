@@ -5,11 +5,24 @@
 {% endblock title %}
 
 {% block content %}
+    <article hx-boost="true">
     <h1> OuttaOffice home </h1>
+    <nav>
+        {% if user.is_authenticated %}
+            <p> Hi {{user.username }} </p>
+            <a href="{% url 'account_logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'account_login' %}">Login</a>
+        {% endif %}
+        
+    </nav>
+
     <p><a href="{% url 'create-item' %}">+ create native item</a></p>
     <p><a href="{% url 'create-collection' %}">+create collection</a></p>
     <p><a href="{% url 'create-mailbox' %}">+create group | list</a></p>
+    <p><a href="{% url 'mailbox-list' %}"> my lists </a></p>
 
     <h2> User mailboxes | lists <h2>
     {% include 'mailbox_list.html' %}
+    </article>
 {% endblock content %}

@@ -13,6 +13,18 @@ class Item(models.Model):
     body = models.TextField(validators.MinLengthValidator(2))
     created_at = models.DateTimeField(auto_now=True)
     tags = ArrayField(models.CharField(max_length=200), blank=True)
+    topic = models.ForeignKey(
+        "connections.Topic",
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="topic_items",
+    )
+    parent = models.ForeignKey(
+        "self", null=True, on_delete=models.CASCADE, related_name="comments"
+    )
+
+    def __str__(self):
+        return self.body[:50]
 
     def get_absolute_url(self):
         return reverse("item", kwargs={"pk": self.pk})

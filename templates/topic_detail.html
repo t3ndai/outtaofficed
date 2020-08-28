@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <article>
+        <h2> {{ topic.name }} </h2>
+        <a href="{% url 'create-topic-item' topic.id %}">+ create new topic post</a>
+
+        <h3> topic posts </h3>
+        {% for post in posts  %}
+            <article hx-boost="true">
+                {{ posts }}
+                <a href="{% url 'item-detail' post.id %}">view post</a>
+            </article>
+        {% endfor %}
+    </article>
+{% endblock content %}  

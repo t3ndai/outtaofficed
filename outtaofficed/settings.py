@@ -25,7 +25,7 @@ SECRET_KEY = "7$!l6tq9+7*de143m#m65u*6mb25=(3!!xuy^l^)lebu%sgnfd"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,14 +41,23 @@ INSTALLED_APPS = [
     ## Third party
     "allauth",
     "allauth.account",
+    "mptt",
+    "django_quill",
+    "markdownx",
+    "ckeditor",
+    "ckeditor_uploader",
+    "corsheaders",
     ## Local
     "accounts",
     "pages",
     "items",
     "connections",
+    "events",
 ]
 
 MIDDLEWARE = [
+    # cors-headers
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -58,6 +67,10 @@ MIDDLEWARE = [
     "sesame.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # whitenoise
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    # pushpin
+    "django_grip.GripMiddleware",
 ]
 
 ROOT_URLCONF = "outtaofficed.urls"
@@ -128,6 +141,13 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+
+MEDIA_URL = "/uploads/"
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 ## ALLAUTH
 AUTH_USER_MODEL = "accounts.CustomUser"
@@ -172,3 +192,48 @@ LOGGING = {
 
 DOMAIN = "outtaoffice.work"
 
+## ckeditor
+
+CKEDITOR_CONFIGS = {
+    "default": {"extraPlugins": ",".join(["clipboard", "uploadimage",]),},
+}
+
+## quill
+
+QUILL_CONFIGS = {
+    "default": {
+        "theme": "snow",
+        "modules": {
+            "syntax": True,
+            "toolbar": [
+                [
+                    {"font": []},
+                    {"header": []},
+                    {"align": []},
+                    "bold",
+                    "italic",
+                    "underline",
+                    "strike",
+                    "blockquote",
+                    {"color": []},
+                    {"background": []},
+                ],
+                ["code-block", "link"],
+                ["clean"],
+            ],
+        },
+    }
+}
+
+
+# Pushpin
+
+GRIP_URL = "http://localhost:5561"
+
+# CORS
+CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://localhost:5561"]
+
+## Event Stream
+
+EVENTSTREAM_ALLOW_ORIGIN = "*"
+EVENTSTREAM_ALLOW_CREDENTIALS = True

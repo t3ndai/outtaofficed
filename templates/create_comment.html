@@ -1,0 +1,12 @@
+
+    <article style="display: flex">
+        <article>
+            <form method="post" action="{% url 'create-comment' item_id%}" enctype=multipart/form-data >
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form }}
+                <input type='submit' value='Comment'>
+            </form>
+        </article>
+    </article>
+    

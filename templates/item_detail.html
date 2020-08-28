@@ -1,8 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {{ item.body }}
-    {% if media %}
-        <img src="{{ media.image }}" />
-    {% endif %}
+    <section hx-sse="connect http://localhost:8001/events?chanid={{ item.id }}">
+        <article>
+            {{  item.body | safe }} 
+            {% if media %}
+                <img src="{{ media.image }}" />
+            {% endif %}
+            <a href="{% url 'create-comment' item.id %}">reply</a>
+        </article>
+        <div hx-trigger="sse:new_comment" hx-get="/items/{{item.id}}/comments" hx-target="#comments"></div>
+        <article id="comments">
+            {% include "comments.html" with comments=comments %}
+        </article>
+        <article id="reply"></article>
+    </section>
 {% endblock content %}

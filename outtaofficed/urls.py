@@ -16,6 +16,23 @@ Including another URLconf
 from os import name
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.decorators.cache import never_cache
+
+from ckeditor_uploader import views as uploader_views
+
+from connections import views as connection_views
+from items import views as item_views
+
+topics_urls = [
+    path("<uuid:topic_id>", connection_views.topic_detail, name="topic-detail"),
+    path(
+        "<uuid:topic_id>/item/create",
+        item_views.create_topic_item,
+        name="create-topic-item",
+    ),
+]
 
 urlpatterns = [
     path("", include("pages.urls")),
@@ -24,4 +41,10 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("items/", include("items.urls")),
     path("connections/", include("connections.urls")),
-]
+    path("markdownx/", include("markdownx.urls")),
+    path("ckeditor/upload/", uploader_views.upload, name="ckeditor_upload"),
+    path(
+        "ckeditor/browse/", never_cache(uploader_views.browse), name="ckeditor_browse"
+    ),
+    path("topics/", include(topics_urls)),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
